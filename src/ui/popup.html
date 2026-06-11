@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TOJI_HUD // ACTIVE_VIEW</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body class="popup-body">
+    <!-- Header -->
+    <header class="popup-header">
+        <div class="sidebar-logo" style="padding: 0; font-size: 18px;">
+            <div class="pulse-dot"></div>
+            TOJI V1.0 (beta)
+        </div>
+        <div id="status-badge" class="status-badge" style="color: var(--primary);">
+            SYSTEM_ONLINE
+        </div>
+    </header>
+
+    <!-- Main Controller -->
+    <main class="popup-main">
+        <!-- Big Mode Toggle -->
+        <div class="stat-card" style="padding: 24px; border: 1px solid var(--primary);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <div class="stat-label">Automation Loop</div>
+                    <div id="spam-status-text" class="stat-value" style="font-size: 24px; color: var(--primary);">SPAM_OFF</div>
+                </div>
+                <label class="switch" style="transform: scale(1.5);">
+                    <input type="checkbox" id="toggle-btn">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Payload Substitution Toggle -->
+        <div class="stat-card" style="padding: 12px; margin-top: 8px; border: 1px solid var(--ghost-border);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <div class="stat-label">Network Shield</div>
+                    <div style="font-size: 8px; opacity: 0.7;">PAYLOAD_SUBSTITUTION</div>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" id="stealth-mode-btn">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.05);">
+                <div>
+                    <div class="stat-label" style="font-size: 9px; color: #00ffff;">3D_BYPASS</div>
+                </div>
+                <label class="switch" style="transform: scale(0.8);">
+                    <input type="checkbox" id="three-d-btn">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Metrics Row -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div class="stat-card">
+                <div class="stat-label">HITS_LIVE</div>
+                <div id="stat-hits" class="stat-value" style="font-size: 24px;">000</div>
+            </div>
+            <div class="stat-card" style="border-left: 2px solid var(--tertiary);">
+                <div class="stat-label">ERRORS_DEAD</div>
+                <div id="stat-checkouts" class="stat-value" style="font-size: 24px; color: var(--tertiary);">000</div>
+            </div>
+        </div>
+
+        <!-- Mini Terminal View -->
+        <div class="input-group">
+            <span class="input-label">REAL_TIME_FEED</span>
+            <div id="mini-terminal" class="popup-mini-terminal">
+                <div class="log-entry info">
+                    <span class="log-time">[ROOT]</span> 
+                    <span>INITIALIZING_TOJI_CORE...</span>
+                </div>
+                <div class="log-entry info">
+                    <span class="log-time">[BOOT]</span> 
+                    <span>SYSTEM_READY_FOR_OPERATIONS</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div style="display: flex; gap: 12px; margin-top: auto;">
+            <button id="settings-btn" class="btn-action btn-ghost" style="flex: 1; font-size: 11px;">
+                OPEN_DASHBOARD
+            </button>
+            <button id="stop-btn" class="btn-action" style="flex: 1; background: var(--tertiary); font-size: 11px;">
+                EMERGENCY_STOP
+            </button>
+        </div>
+    </main>
+
+    <footer class="footer-hud" style="padding: 12px; border-top: 1px solid var(--ghost-border); text-align: center; font-size: 8px; opacity: 0.5;">
+        SECURE_CONNECTION // TOJI_PROJECT_V1 (BETA)
+    </footer>
+
+    <script src="popup.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TOJI V1.0 | COMMAND CENTER</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=JetBrains+Mono:wght@300;400;500;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "surface-container-lowest": "#0e0e0e",
+                        "primary-fixed": "#c0f500",
+                        "primary": "#ffffff",
+                        "on-primary-fixed": "#161f00",
+                        "on-primary": "#283500",
+                        "secondary-fixed": "#b8eaff",
+                        "on-error": "#690005",
+                        "inverse-primary": "#4f6600",
+                        "error-container": "#93000a",
+                        "surface-tint": "#a8d600",
+                        "surface-container-low": "#1c1b1b",
+                        "tertiary-fixed": "#ffdadb",
+                        "outline-variant": "#444933",
+                        "on-secondary-fixed-variant": "#004d61",
+                        "primary-fixed-dim": "#a8d600",
+                        "surface-variant": "#353534",
+                        "inverse-on-surface": "#313030",
+                        "surface-bright": "#3a3939",
+                        "on-background": "#e5e2e1",
+                        "on-tertiary": "#67001d",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-container-highest": "#353534",
+                        "primary-container": "#c0f500",
+                        "on-tertiary-container": "#c90041",
+                        "background": "#131313",
+                        "secondary-container": "#00cefe",
+                        "tertiary": "#ffffff",
+                        "on-secondary-fixed": "#001f28",
+                        "outline": "#8e9479",
+                        "error": "#ffb4ab",
+                        "secondary-fixed-dim": "#54d5ff",
+                        "on-primary-container": "#546d00",
+                        "tertiary-container": "#ffdadb",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-high": "#2a2a2a",
+                        "surface": "#131313",
+                        "on-primary-fixed-variant": "#3b4d00",
+                        "on-tertiary-fixed-variant": "#91002d",
+                        "on-secondary": "#003544",
+                        "surface-container": "#201f1f",
+                        "on-surface-variant": "#c4caac",
+                        "on-surface": "#e5e2e1",
+                        "on-secondary-container": "#005469",
+                        "secondary": "#a0e4ff",
+                        "tertiary-fixed-dim": "#ffb2b8",
+                        "on-tertiary-fixed": "#40000f",
+                        "surface-dim": "#131313"
+                    },
+                    fontFamily: {
+                        "headline": ["Space Grotesk"],
+                        "body": ["Inter"],
+                        "label": ["JetBrains Mono"]
+                    },
+                    borderRadius: {"DEFAULT": "0px", "lg": "4px", "xl": "8px", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scanline-overlay {
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+        .glass-panel {
+            background: rgba(32, 31, 31, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        @keyframes pulse-glow {
+            0% { opacity: 0.4; box-shadow: 0 0 0px #c8fe00; }
+            50% { opacity: 1; box-shadow: 0 0 10px #c8fe00; }
+            100% { opacity: 0.4; box-shadow: 0 0 0px #c8fe00; }
+        }
+        .animate-pulse-glow {
+            animation: pulse-glow 2s infinite;
+        }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-background font-body selection:bg-primary-container selection:text-on-primary-container">
+<!-- Header / TopAppBar -->
+<header class="flex justify-between items-center px-6 h-16 w-full fixed top-0 z-50 bg-[#131313] dark:bg-[#0e0e0e] shadow-[0_0_15px_rgba(200,254,0,0.1)]">
+<div class="flex items-center gap-4">
+<span class="font-['Space_Grotesk'] font-black text-[#ffffff] tracking-widest text-xl">TOJI V1.0 (beta)</span>
+<div class="hidden md:flex items-center gap-2 bg-surface-container-high px-3 py-1 rounded-lg">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse-glow"></span>
+<span class="font-label text-[10px] text-primary-container tracking-wider uppercase">Server Status: ONLINE</span>
+</div>
+</div>
+<nav class="hidden md:flex gap-8 h-full items-center">
+<a class="text-[#ffffff] border-b-2 border-[#c8fe00] h-full flex items-center font-['Space_Grotesk'] tracking-tighter uppercase font-bold text-sm" href="#">Dashboard</a>
+<a class="text-gray-500 font-['JetBrains_Mono'] hover:bg-[#c8fe00]/10 transition-colors px-2 py-1 uppercase text-sm" href="#">Analytics</a>
+<a class="text-gray-500 font-['JetBrains_Mono'] hover:bg-[#c8fe00]/10 transition-colors px-2 py-1 uppercase text-sm" href="#">Network</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="text-primary-container material-symbols-outlined">sensors</button>
+<div class="font-label text-xs font-bold text-primary-container border border-primary-container/30 px-3 py-1">_COMMAND_CENTER</div>
+</div>
+<div class="bg-gradient-to-r from-[#c8fe00]/20 to-transparent h-[2px] w-full absolute bottom-0 left-0"></div>
+</header>
+<!-- Side Navigation (Desktop) -->
+<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 pt-20 pb-4 w-64 bg-[#131313] dark:bg-[#0e0e0e] z-40">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-container-highest flex items-center justify-center border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary-container">terminal</span>
+</div>
+<div>
+<h2 class="font-label text-xs font-black text-[#c8fe00]">TOJI_OS</h2>
+<p class="font-label text-[10px] text-gray-500 tracking-tight">V1.0_BETA</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 bg-[#c8fe00] text-[#131313] font-bold font-label text-xs uppercase cursor-crosshair" href="#">
+<span class="material-symbols-outlined text-sm">terminal</span> Command
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-[#c8fe00] hover:bg-[#353534] transition-all font-label text-xs uppercase cursor-crosshair" href="#">
+<span class="material-symbols-outlined text-sm">list_alt</span> Logs
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-[#c8fe00] hover:bg-[#353534] transition-all font-label text-xs uppercase cursor-crosshair" href="#">
+<span class="material-symbols-outlined text-sm">hub</span> Network
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-[#c8fe00] hover:bg-[#353534] transition-all font-label text-xs uppercase cursor-crosshair" href="#">
+<span class="material-symbols-outlined text-sm">security</span> Security
+            </a>
+</nav>
+<div class="px-4 mt-auto space-y-4">
+<button class="w-full py-3 bg-primary-container text-on-primary-fixed font-label text-xs font-bold uppercase tracking-widest hover:brightness-110 transition-all">
+                _EXECUTE_SCAN
+            </button>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-gray-500 hover:text-white font-label text-[10px] uppercase" href="#">
+<span class="material-symbols-outlined text-xs">settings</span> Settings
+                </a>
+<a class="flex items-center gap-3 px-4 py-2 text-gray-500 hover:text-white font-label text-[10px] uppercase" href="#">
+<span class="material-symbols-outlined text-xs">help</span> Support
+                </a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pt-20 pb-24 lg:pb-8 lg:ml-64 px-4 md:px-8 max-w-[1600px] mx-auto min-h-screen relative">
+<div class="scanline-overlay fixed inset-0 z-[100] opacity-10 pointer-events-none"></div>
+<!-- Dashboard Overview Grid -->
+<section class="mb-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="glass-panel p-5 border-l-2 border-primary-container relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-2 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-5xl">trending_up</span>
+</div>
+<p class="font-label text-[10px] text-gray-500 uppercase tracking-widest mb-1">My Hits</p>
+<h3 class="font-headline text-3xl font-black text-white tracking-tighter">1,284</h3>
+<div class="mt-2 flex items-center gap-2">
+<span class="text-[10px] font-label text-primary-container">+12% vs last 24h</span>
+</div>
+</div>
+<div class="glass-panel p-5 border-l-2 border-secondary-container relative overflow-hidden group">
+<p class="font-label text-[10px] text-gray-500 uppercase tracking-widest mb-1">Attempts</p>
+<h3 class="font-headline text-3xl font-black text-white tracking-tighter">45,902</h3>
+<div class="mt-2 flex items-center gap-2">
+<span class="text-[10px] font-label text-secondary-container">Active monitoring</span>
+</div>
+</div>
+<div class="glass-panel p-5 border-l-2 border-primary-container relative overflow-hidden group">
+<p class="font-label text-[10px] text-gray-500 uppercase tracking-widest mb-1">Hit Rate %</p>
+<h3 class="font-headline text-3xl font-black text-white tracking-tighter">2.79%</h3>
+<div class="mt-2 flex items-center gap-2">
+<div class="w-full bg-surface-container-highest h-1">
+<div class="bg-primary-container h-full w-[27%] shadow-[0_0_5px_#c8fe00]"></div>
+</div>
+</div>
+</div>
+<div class="glass-panel p-5 border-l-2 border-tertiary-container relative overflow-hidden group">
+<p class="font-label text-[10px] text-gray-500 uppercase tracking-widest mb-1">Hit History Value</p>
+<h3 class="font-headline text-3xl font-black text-white tracking-tighter">$14,205.00</h3>
+<p class="text-[10px] font-label text-gray-400 mt-2">Total from 4,102 logs</p>
+</div>
+</section>
+<!-- Personal Stats & Site Breakdown -->
+<section class="grid grid-cols-1 xl:grid-cols-3 gap-6 mb-8">
+<div class="xl:col-span-2 glass-panel p-6">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline text-lg font-bold tracking-tight uppercase flex items-center gap-2">
+<span class="w-1 h-5 bg-primary-container"></span> Site Breakdown
+                    </h2>
+<span class="font-label text-[10px] text-gray-500">REAL-TIME_DATA_STREAM</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="font-label text-[10px] text-gray-500 uppercase border-b border-outline-variant/20">
+<th class="pb-3 px-2">Site Endpoint</th>
+<th class="pb-3 px-2">Hits</th>
+<th class="pb-3 px-2">Attempts</th>
+<th class="pb-3 px-2">Rate</th>
+<th class="pb-3 px-2 text-right">Trend</th>
+</tr>
+</thead>
+<tbody class="font-label text-xs">
+<tr class="hover:bg-primary-container/5 transition-colors border-b border-outline-variant/10">
+<td class="py-4 px-2 text-white font-medium">Amazon.com (US)</td>
+<td class="py-4 px-2">412</td>
+<td class="py-4 px-2">12,400</td>
+<td class="py-4 px-2 text-primary-container">3.32%</td>
+<td class="py-4 px-2 text-right text-primary-container"><span class="material-symbols-outlined text-sm">trending_up</span></td>
+</tr>
+<tr class="hover:bg-primary-container/5 transition-colors border-b border-outline-variant/10">
+<td class="py-4 px-2 text-white font-medium">Nike Store</td>
+<td class="py-4 px-2">89</td>
+<td class="py-4 px-2 4,200">4,200</td>
+<td class="py-4 px-2 text-primary-container">2.11%</td>
+<td class="py-4 px-2 text-right text-primary-container"><span class="material-symbols-outlined text-sm">trending_up</span></td>
+</tr>
+<tr class="hover:bg-primary-container/5 transition-colors border-b border-outline-variant/10">
+<td class="py-4 px-2 text-white font-medium">Walmart Checkout</td>
+<td class="py-4 px-2">156</td>
+<td class="py-4 px-2">8,900</td>
+<td class="py-4 px-2 text-secondary-container">1.75%</td>
+<td class="py-4 px-2 text-right text-secondary-container"><span class="material-symbols-outlined text-sm">trending_flat</span></td>
+</tr>
+<tr class="hover:bg-primary-container/5 transition-colors">
+<td class="py-4 px-2 text-white font-medium">Apple.com Pay</td>
+<td class="py-4 px-2">12</td>
+<td class="py-4 px-2">3,100</td>
+<td class="py-4 px-2 text-on-tertiary-container">0.38%</td>
+<td class="py-4 px-2 text-right text-on-tertiary-container"><span class="material-symbols-outlined text-sm">trending_down</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="space-y-6">
+<!-- Input Modes Panel (BIN vs CC) -->
+<div class="glass-panel p-6 border-t-2 border-primary-container">
+<div class="flex gap-4 mb-6">
+<button class="flex-1 pb-2 border-b-2 border-primary-container font-label text-xs uppercase text-white font-bold tracking-tighter">BIN Mode</button>
+<button class="flex-1 pb-2 border-b border-outline-variant/30 font-label text-xs uppercase text-gray-500 tracking-tighter">CC Mode</button>
+</div>
+<div class="space-y-4">
+<div>
+<label class="font-label text-[10px] text-gray-500 uppercase block mb-2">Enter BIN</label>
+<div class="flex gap-2">
+<input class="flex-1 bg-transparent border-none border-b border-outline-variant text-primary-container focus:ring-0 focus:border-primary-container font-label" placeholder="411122" type="text"/>
+<button class="bg-primary-container text-on-primary-fixed px-4 py-1 font-label text-xs font-bold uppercase">Add</button>
+</div>
+</div>
+<div class="flex justify-between items-center pt-2">
+<button class="text-[10px] font-label text-gray-400 hover:text-white flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">save</span> _SAVE_BINS
+                            </button>
+<button class="text-[10px] font-label text-primary-container flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">folder_open</span> Open BIN Library
+                            </button>
+</div>
+</div>
+</div>
+<!-- Proxy Settings -->
+<div class="glass-panel p-6 border-t-2 border-secondary-container">
+<h2 class="font-label text-xs font-bold text-secondary-container uppercase mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">vpn_lock</span> Proxy Settings
+                    </h2>
+<div>
+<input class="w-full bg-transparent border-none border-b border-outline-variant text-secondary-container focus:ring-0 focus:border-secondary-container font-label text-xs" placeholder="user:pass@host:port" type="text"/>
+<p class="text-[9px] font-label text-gray-500 mt-2">HTTP/SOCKS5 Supported. Auto-rotation enabled.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Webhook & Real-Time Logs -->
+<section class="grid grid-cols-1 xl:grid-cols-4 gap-6">
+<!-- Webhook Settings -->
+<div class="xl:col-span-1 space-y-6">
+<div class="glass-panel p-6 border-t-2 border-primary-container">
+<h2 class="font-label text-xs font-bold text-white uppercase mb-6 flex items-center justify-between">
+                        Telegram Hook
+                        <label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-8 h-4 bg-surface-container-highest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-primary-container"></div>
+</label>
+</h2>
+<div class="space-y-4">
+<div>
+<label class="font-label text-[10px] text-gray-500 uppercase block mb-1">Bot Token</label>
+<input class="w-full bg-transparent border-none border-b border-outline-variant text-white focus:ring-0 focus:border-primary-container font-label text-xs" type="password" value="72938491:AAH8..."/>
+</div>
+<div>
+<label class="font-label text-[10px] text-gray-500 uppercase block mb-1">Group ID</label>
+<input class="w-full bg-transparent border-none border-b border-outline-variant text-white focus:ring-0 focus:border-primary-container font-label text-xs" type="text" value="-10012345678"/>
+</div>
+<div>
+<label class="font-label text-[10px] text-gray-500 uppercase block mb-1">Your Chat ID</label>
+<input class="w-full bg-transparent border-none border-b border-outline-variant text-white focus:ring-0 focus:border-primary-container font-label text-xs" type="text" value="58293021"/>
+</div>
+<div class="grid grid-cols-2 gap-2 pt-4">
+<button class="bg-surface-container-highest text-white py-2 font-label text-[10px] font-bold uppercase hover:bg-white hover:text-black transition-colors">Save config</button>
+<button class="bg-primary-container/10 border border-primary-container text-primary-container py-2 font-label text-[10px] font-bold uppercase hover:bg-primary-container hover:text-black transition-colors">Test Ping</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Logs Section -->
+<div class="xl:col-span-3 glass-panel p-6">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+<div class="flex gap-2 flex-wrap">
+<button class="px-3 py-1 bg-primary-container text-on-primary-fixed font-label text-[10px] font-bold uppercase">All</button>
+<button class="px-3 py-1 bg-surface-container-highest text-white font-label text-[10px] font-bold uppercase hover:bg-secondary-container/20">3DS</button>
+<button class="px-3 py-1 bg-surface-container-highest text-white font-label text-[10px] font-bold uppercase hover:bg-primary-container/20">Success</button>
+<button class="px-3 py-1 bg-surface-container-highest text-white font-label text-[10px] font-bold uppercase hover:bg-on-tertiary-container/20">Errors</button>
+</div>
+<div class="relative w-full md:w-64">
+<span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-gray-500 text-sm">search</span>
+<input class="w-full bg-surface-container-highest border-none pl-8 pr-4 py-1 text-xs font-label focus:ring-1 focus:ring-primary-container" placeholder="Search logs..." type="text"/>
+</div>
+</div>
+<div class="space-y-2 max-h-[500px] overflow-y-auto pr-2 custom-scrollbar">
+<!-- Log Entry 1 -->
+<div class="bg-surface-container-low p-3 flex flex-col md:flex-row items-start md:items-center gap-4 group">
+<div class="flex items-center gap-3 min-w-[120px]">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container shadow-[0_0_5px_#c8fe00]"></span>
+<span class="font-label text-[10px] text-primary-container font-bold uppercase">Success</span>
+</div>
+<div class="flex-1">
+<p class="font-label text-xs text-white">411122******1234 | 12/26 | 091</p>
+<p class="text-[9px] font-label text-gray-500">2023-10-24 14:22:10 · Auth ID: 9283-AX</p>
+</div>
+<div class="md:w-1/3">
+<p class="text-[10px] font-label text-gray-300">Response: <span class="text-primary-container font-bold">CHARGED $29.99</span></p>
+</div>
+<button class="material-symbols-outlined text-gray-600 group-hover:text-primary-container transition-colors">content_copy</button>
+</div>
+<!-- Log Entry 2 -->
+<div class="bg-surface-container-low p-3 flex flex-col md:flex-row items-start md:items-center gap-4 group">
+<div class="flex items-center gap-3 min-w-[120px]">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-container"></span>
+<span class="font-label text-[10px] text-secondary-container font-bold uppercase">3D Required</span>
+</div>
+<div class="flex-1">
+<p class="font-label text-xs text-white">541275******8892 | 08/25 | 114</p>
+<p class="text-[9px] font-label text-gray-500">2023-10-24 14:21:45 · VBV Secure Enrolled</p>
+</div>
+<div class="md:w-1/3">
+<p class="text-[10px] font-label text-gray-300">Response: <span class="text-secondary-container font-bold">REDIRECTING_AUTH...</span></p>
+</div>
+<button class="material-symbols-outlined text-gray-600 group-hover:text-primary-container transition-colors">content_copy</button>
+</div>
+<!-- Log Entry 3 -->
+<div class="bg-surface-container-low p-3 flex flex-col md:flex-row items-start md:items-center gap-4 group border-l-2 border-on-tertiary-container">
+<div class="flex items-center gap-3 min-w-[120px]">
+<span class="w-1.5 h-1.5 rounded-full bg-on-tertiary-container shadow-[0_0_5px_#ff0055]"></span>
+<span class="font-label text-[10px] text-on-tertiary-container font-bold uppercase">Declined</span>
+</div>
+<div class="flex-1">
+<p class="font-label text-xs text-white">400000******0002 | 01/24 | 000</p>
+<p class="text-[9px] font-label text-gray-500">2023-10-24 14:20:01 · Gateway rejection</p>
+</div>
+<div class="md:w-1/3">
+<p class="text-[10px] font-label text-gray-300">Response: <span class="text-on-tertiary-container font-bold">INSUFFICIENT FUNDS</span></p>
+</div>
+<button class="material-symbols-outlined text-gray-600 group-hover:text-primary-container transition-colors">content_copy</button>
+</div>
+<!-- Log Entry 4 -->
+<div class="bg-surface-container-low p-3 flex flex-col md:flex-row items-start md:items-center gap-4 group">
+<div class="flex items-center gap-3 min-w-[120px]">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container shadow-[0_0_5px_#c8fe00]"></span>
+<span class="font-label text-[10px] text-primary-container font-bold uppercase">Success</span>
+</div>
+<div class="flex-1">
+<p class="font-label text-xs text-white">411122******9988 | 11/27 | 331</p>
+<p class="text-[9px] font-label text-gray-500">2023-10-24 14:19:30 · Auth ID: 5541-ZZ</p>
+</div>
+<div class="md:w-1/3">
+<p class="text-[10px] font-label text-gray-300">Response: <span class="text-primary-container font-bold">CHARGED $1.00 (VERIFY)</span></p>
+</div>
+<button class="material-symbols-outlined text-gray-600 group-hover:text-primary-container transition-colors">content_copy</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full flex justify-around items-center h-16 pb-safe bg-[#131313]/90 backdrop-blur-md border-t border-[#353534] z-50">
+<a class="flex flex-col items-center justify-center text-[#c8fe00] drop-shadow-[0_0_5px_#c8fe00]" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-['JetBrains_Mono'] text-[10px]">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-gray-500 active:bg-[#c8fe00]/5" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-['JetBrains_Mono'] text-[10px]">Logs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-gray-500 active:bg-[#c8fe00]/5" href="#">
+<span class="material-symbols-outlined">lan</span>
+<span class="font-['JetBrains_Mono'] text-[10px]">Proxy</span>
+</a>
+<a class="flex flex-col items-center justify-center text-gray-500 active:bg-[#c8fe00]/5" href="#">
+<span class="material-symbols-outlined">notifications_active</span>
+<span class="font-['JetBrains_Mono'] text-[10px]">Hook</span>
+</a>
+</nav>
+<!-- Footer -->
+<footer class="lg:ml-64 flex justify-between items-center px-8 w-full py-4 bg-[#0e0e0e] border-t border-[#353534]/30 mt-auto">
+<p class="font-['JetBrains_Mono'] text-[10px] opacity-60 text-white uppercase">dev by @RealYashvirGaming</p>
+<a class="font-['JetBrains_Mono'] text-[10px] text-[#c8fe00] hover:opacity-100 hover:text-[#ffffff] transition-opacity uppercase font-bold tracking-widest underline decoration-[#c8fe00]/30 underline-offset-4" href="https://t.me/mumiru_who" target="_blank">
+            JOIN TG
+        </a>
+</footer>
+</body></html>

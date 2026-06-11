@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TOJI V1.0 | COMMAND CENTER</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <header class="app-header">
+        <div style="display: flex; gap: 16px; align-items: center;">
+            <div class="brand-title">TOJI V1.0 (BETA)</div>
+            <div class="status-pill hide-mobile">
+                <span class="pulse-dot"></span> ONLINE
+            </div>
+        </div>
+        <div style="display: flex; gap: 16px; align-items: center;">
+            <div id="status-msg" style="font-family: var(--font-mono); font-size: 11px; color: var(--primary);">SYSTEM READY</div>
+            <button id="save-btn" class="btn btn-primary" style="padding: 6px 16px; font-size: 12px;">SAVE_CFG</button>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <!-- Desktop Sidebar -->
+        <aside class="sidebar">
+            <nav class="sidebar-nav">
+                <div class="input-label" style="margin: 10px 16px;">MAIN_MENU</div>
+                <div class="nav-item active" data-tab="dashboard">
+                    <span class="material-symbols-outlined">terminal</span> COMMAND CENTER
+                </div>
+                <button id="export-hits-btn" class="nav-item" style="background: transparent; border: none; width: 100%; text-align: left;">
+                    <span class="material-symbols-outlined">download</span> EXPORT HITS
+                </button>
+                <button id="reset-btn" class="nav-item" style="background: transparent; border: none; width: 100%; text-align: left; color: var(--tertiary);">
+                    <span class="material-symbols-outlined">delete_forever</span> PURGE DATA
+                </button>
+                
+                <div class="input-label" style="margin: 24px 16px 10px;">ENGINE_CFG</div>
+                
+                <div style="padding: 0 16px; margin-bottom: 12px;">
+                    <span class="input-label">Payment Mode</span>
+                    <select id="current-mode" class="input-field" style="background: var(--surface-high); border: 1px solid var(--ghost-border); padding: 8px;">
+                        <option value="bin">MULTI_BIN</option>
+                        <option value="full">FULL_CARD</option>
+                    </select>
+                </div>
+                
+                <div style="padding: 0 16px; margin-bottom: 12px;">
+                    <span class="input-label">Execution Engine</span>
+                    <select id="mode-select" class="input-field" style="background: var(--surface-high); border: 1px solid var(--ghost-border); padding: 8px;">
+                        <option value="turbo">TURBO_INSTANT</option>
+                        <option value="safe">SAFE_SIMULATION</option>
+                    </select>
+                </div>
+
+                <div style="padding: 0 16px; margin-bottom: 12px;">
+                    <span class="input-label">Region Lock</span>
+                    <input type="text" id="country-input" class="input-field" value="US" placeholder="ISO Code (US, GB...)">
+                </div>
+
+                <div class="input-label" style="margin: 24px 16px 10px;">SECURITY_PROTOCOLS</div>
+                
+                <div style="padding: 0 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="font-family: var(--font-mono); font-size: 10px; color: var(--on-surface);">STEALTH CLOAK</span>
+                    <label class="switch"><input type="checkbox" id="stealth-check" checked><span class="slider"></span></label>
+                </div>
+                <div style="padding: 0 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="font-family: var(--font-mono); font-size: 10px; color: var(--on-surface);">NETWORK PROXY</span>
+                    <label class="switch"><input type="checkbox" id="proxy-check" checked><span class="slider"></span></label>
+                </div>
+                <div style="padding: 0 16px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="font-family: var(--font-mono); font-size: 10px; color: var(--on-surface);">REFRESH DECLINE</span>
+                    <label class="switch"><input type="checkbox" id="refresh-on-decline" checked><span class="slider"></span></label>
+                </div>
+
+                <!-- Hidden inputs for existing JS to hook into unbreaking logic -->
+                <div style="display:none;">
+                    <select id="cvc-modifier"><option value="normal"></option></select>
+                    <div id="custom-cvc-group"><input type="text" id="custom-cvc-input"></div>
+                    <input type="checkbox" id="remove-agent-check" checked>
+                    <input type="checkbox" id="remove-zip-check">
+                    <input type="checkbox" id="block-analytics-check" checked>
+                    <input type="checkbox" id="three-d-check">
+                    <span id="active-tab-name"></span>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="canvas" id="tab-dashboard">
+            
+            <!-- Dashboard Stats -->
+            <section class="grid-stats">
+                <div class="glass-panel border-top-primary">
+                    <div class="stat-title">My Hits</div>
+                    <div class="stat-value" style="color: var(--primary);" id="stat-total-hits">0</div>
+                    <div style="margin-top: 8px; font-family: var(--font-mono); font-size: 10px; color: var(--primary);">+0% session trend</div>
+                </div>
+                <div class="glass-panel border-top-secondary">
+                    <div class="stat-title">Hit Rate</div>
+                    <div class="stat-value" style="color: var(--secondary);"><span id="stat-success-rate">0.00</span>%</div>
+                    <div style="margin-top: 8px; width: 100%; height: 2px; background: rgba(0,255,255,0.2);"></div>
+                </div>
+                <div class="glass-panel" style="border-top: 2px solid var(--tertiary);">
+                    <div class="stat-title">Declined</div>
+                    <div class="stat-value" style="color: var(--tertiary);" id="log-stat-errors">0</div>
+                </div>
+                <div class="glass-panel">
+                    <div class="stat-title">Hit History Value</div>
+                    <div class="stat-value" id="log-stat-hits">0</div>
+                    <div style="margin-top: 8px; font-family: var(--font-mono); font-size: 10px; color: var(--on-surface-variant);">Total captured assets</div>
+                </div>
+            </section>
+
+            <!-- Middle Row: Cards & Webhook -->
+            <section class="grid-main">
+                <!-- CC Input Hub -->
+                <div class="glass-panel" style="display: flex; flex-direction: column; gap: 16px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="input-label" style="font-size: 12px; color: #fff;">CARD DATABASE ENTRY</span>
+                        <span class="input-label" style="color: var(--primary);" id="card-count">0 CARDS LOADED</span>
+                    </div>
+                    
+                    <textarea id="card-input" class="textarea-field" placeholder="PASTE CARDS OR BINS HERE...&#10;Format: number|mm|yy|cvv&#10;Format: 411122..."></textarea>
+                    
+                    <div style="display: flex; gap: 16px; justify-content: space-between; align-items: center; border-top: 1px solid var(--ghost-border); padding-top: 16px;">
+                        <div style="display: flex; gap: 12px;">
+                            <div style="font-family: var(--font-mono); font-size: 10px;">VISA: <span id="badge-visa" style="color:var(--primary);">0</span></div>
+                            <div style="font-family: var(--font-mono); font-size: 10px;">MC: <span id="badge-mc" style="color:var(--primary);">0</span></div>
+                            <div style="font-family: var(--font-mono); font-size: 10px;">AMX: <span id="badge-amex" style="color:var(--primary);">0</span></div>
+                            <div style="font-family: var(--font-mono); font-size: 10px;">DSC: <span id="badge-disc" style="color:var(--primary);">0</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Webhook Panel -->
+                <div class="glass-panel" style="display: flex; flex-direction: column; gap: 16px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="input-label" style="font-size: 12px; color: #fff;">TELEGRAM FORWARDER</span>
+                    </div>
+                    <p style="font-family: var(--font-mono); font-size: 9px; color: var(--on-surface-variant); margin-top: -8px;">Send hit notifications with full cc info & site response.</p>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 12px;">
+                        <input type="text" id="tg-token" class="input-field" placeholder="Bot Token (e.g. 12345:ABC-...)">
+                        <input type="text" id="tg-chatid" class="input-field" placeholder="Chat ID / Group ID (e.g. -100xxx)">
+                    </div>
+
+                    <div style="margin-top: auto; padding-top: 16px; border-top: 1px solid var(--ghost-border); display: flex; gap: 8px;">
+                        <button class="btn btn-outline" style="flex: 1;" onclick="document.getElementById('save-btn').click();">SAVE CONFIG</button>
+                        <button id="test-tg-btn" class="btn btn-primary" style="flex: 1;">TEST PING</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Logs Terminal -->
+            <section class="glass-panel" style="flex: 1; display: flex; flex-direction: column; padding: 0;">
+                <div class="terminal-header">
+                    <span class="input-label" style="font-size: 12px; color: #fff; margin:0;">REAL-TIME LOGS</span>
+                    <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+                        <div class="search-bar">
+                            <span class="material-symbols-outlined">search</span>
+                            <input type="text" id="log-search-input" placeholder="Search logs (BIN, MSG)..." style="width: 200px;">
+                        </div>
+                        <div class="filter-tabs">
+                            <button class="filter-btn active all" data-filter="all">ALL</button>
+                            <button class="filter-btn hit" data-filter="hit">SUCCESS</button>
+                            <button class="filter-btn error" data-filter="error">DECLINES</button>
+                        </div>
+                    </div>
+                </div>
+                <div id="dashboard-terminal" class="terminal-body" style="max-height: 400px; overflow-y: auto; padding-right: 8px;">
+                    <!-- Logs will be populated here by options.js -->
+                    <div style="text-align: center; color: var(--ghost-border); margin-top: 150px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em;">NO_LOGS_AVAILABLE...</div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Mobile Nav -->
+    <nav class="mobile-nav">
+        <a class="mob-nav-item active" href="#">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span>Home</span>
+        </a>
+        <a class="mob-nav-item" href="#" onclick="window.scrollTo(0, document.body.scrollHeight);">
+            <span class="material-symbols-outlined">receipt_long</span>
+            <span>Logs</span>
+        </a>
+    </nav>
+    
+    <footer class="app-footer">
+        <span>DEV BY @MUMIRU_BRO</span>
+        <a href="https://t.me/mumiru_who" target="_blank">JOIN TG</a>
+    </footer>
+
+    <!-- Welcome Modal (One-Time) -->
+    <div id="welcome-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content glass-panel">
+            <div class="modal-header">
+                <div class="brand-title" style="color: var(--primary); font-size: 24px; text-shadow: 0 0 15px rgba(200, 254, 0, 0.4);">
+                    TOJI PROJECT V1 BETA
+                </div>
+            </div>
+            <div class="modal-body">
+                <p style="color: #fff; font-family: var(--font-mono); font-size: 13px; line-height: 1.6; margin-bottom: 20px;">
+                    Welcome to the <span style="color: var(--primary); font-weight: bold;">TOJI COMMAND CENTER</span>. 
+                    Developed by <span style="color: var(--secondary);">@RealYashvirGaming</span>.
+                </p>
+                
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid var(--ghost-border); padding: 16px; border-radius: 4px; margin-bottom: 24px;">
+                    <p style="font-size: 12px; margin-bottom: 12px; color: var(--on-surface-variant);">
+                        • This is a <span style="color: var(--tertiary);">BETA</span> version. It includes core automation protocols and new stealth features.
+                    </p>
+                    <p style="font-size: 12px; margin-bottom: 12px; color: var(--on-surface-variant);">
+                        • There may be bugs. If you encounter any, please report them directly to my Telegram.
+                    </p>
+                    <p style="font-size: 12px; margin-bottom: 12px; color: var(--on-surface-variant);">
+                        • <span style="color: var(--primary);">OPEN SOURCE:</span> You are free to use, edit, and modify this project for your own use.
+                    </p>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <a href="https://t.me/mumiru_who" target="_blank" class="btn btn-outline" style="width: 100%; border-color: var(--secondary); color: var(--secondary);">
+                        <span class="material-symbols-outlined">send</span> JOIN TELEGRAM / FEEDBACK
+                    </a>
+                    <button id="close-welcome-btn" class="btn btn-primary" style="width: 100%; height: 50px; font-size: 14px; letter-spacing: 2px;">
+                        ENTER COMMAND CENTER
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="options.js" type="module"></script>
+</body>
+</html>
