@@ -1,0 +1,95 @@
+[
+  {
+    "id": 1,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "requestHeaders": [
+        { "header": "content-type", "operation": "set", "value": "application/x-www-form-urlencoded" }
+      ]
+    },
+    "condition": {
+      "urlFilter": "||api.stripe.com/",
+      "resourceTypes": ["xmlhttprequest"]
+    }
+  },
+  {
+    "id": 2,
+    "priority": 2,
+    "action": {
+      "type": "modifyHeaders",
+      "responseHeaders": [
+        { "header": "content-security-policy", "operation": "remove" },
+        { "header": "content-security-policy-report-only", "operation": "remove" },
+        { "header": "x-content-security-policy", "operation": "remove" },
+        { "header": "x-webkit-csp", "operation": "remove" },
+        { "header": "x-frame-options", "operation": "remove" },
+        { "header": "frame-options", "operation": "remove" }
+      ]
+    },
+    "condition": {
+      "urlFilter": "||stripe.com^",
+      "resourceTypes": ["main_frame", "sub_frame", "script", "xmlhttprequest"]
+    }
+  },
+  {
+    "id": 3,
+    "priority": 1,
+    "action": {
+      "type": "redirect",
+      "redirect": {
+        "transform": {
+          "queryTransform": {
+            "addOrReplaceParams": [ { "key": "hl", "value": "en-US" } ]
+          }
+        }
+      }
+    },
+    "condition": {
+      "regexFilter": "^https://[^\\\\.]*\\\\.(google\\\\.com|recaptcha\\\\.net)/recaptcha",
+      "resourceTypes": ["sub_frame"]
+    }
+  },
+  {
+    "id": 4,
+    "priority": 1,
+    "action": {
+      "type": "modifyHeaders",
+      "responseHeaders": [
+        { "header": "content-security-policy", "operation": "remove" },
+        { "header": "content-security-policy-report-only", "operation": "remove" }
+      ]
+    },
+    "condition": {
+      "urlFilter": "*://*.hcaptcha.com/*",
+      "resourceTypes": ["main_frame", "sub_frame", "script"]
+    }
+  },
+  {
+    "id": 5,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||q.stripe.com",
+      "resourceTypes": ["xmlhttprequest", "script"]
+    }
+  },
+  {
+    "id": 6,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||xsolla.com/api/analytics",
+      "resourceTypes": ["xmlhttprequest"]
+    }
+  },
+  {
+    "id": 7,
+    "priority": 1,
+    "action": { "type": "block" },
+    "condition": {
+      "urlFilter": "||stats.g.doubleclick.net",
+      "resourceTypes": ["xmlhttprequest", "image"]
+    }
+  }
+]

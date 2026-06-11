@@ -1,0 +1,91 @@
+{
+  "manifest_version": 3,
+  "name": "Toji Project",
+  "version": "1.0.0",
+  "description": "Elite-Level Unified Automation System. Developed by @RealYashvirGaming",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess",
+    "offscreen",
+    "downloads",
+    "clipboardWrite",
+    "tabs",
+    "webNavigation",
+    "alarms",
+    "notifications",
+    "proxy",
+    "webRequest",
+    "webRequestAuthProvider",
+    "cookies",
+    "debugger"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "src/core/background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "src/ui/popup.html",
+    "default_icon": {
+      "16": "assets/toji.jpg",
+      "48": "assets/toji.jpg",
+      "128": "assets/toji.jpg"
+    }
+  },
+  "icons": {
+    "16": "assets/toji.jpg",
+    "48": "assets/toji.jpg",
+    "128": "assets/toji.jpg"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/core/content.js"],
+      "run_at": "document_idle",
+      "all_frames": true,
+      "type": "module"
+    },
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/stealth/injected.js"],
+      "run_at": "document_start",
+      "all_frames": true,
+      "world": "MAIN"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "src/engines/*.js",
+        "src/stealth/auto-3ds.js",
+        "src/utils/*.js",
+        "src/ui/*.js",
+        "src/solvers/*.js",
+        "src/core/storage.js",
+        "assets/*"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ruleset_1",
+        "enabled": true,
+        "path": "rules.json"
+      }
+    ]
+  },
+  "options_ui": {
+    "page": "src/ui/options.html",
+    "open_in_tab": true
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}
